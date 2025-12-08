@@ -23,8 +23,8 @@ if [ "$MODULE" = "" ] ; then
     exit 1
 fi
 
-BOARD_OPTIONS=""
-# BOARD_OPTIONS="--board-options CDCOnBoot=cdc"
+# BOARD_OPTIONS=""
+BOARD_OPTIONS="--board-options CDCOnBoot=cdc"
 # if [ "$CHIP" = esp32cam ] ; then
 #     BOARD_OPTIONS=""
 # fi

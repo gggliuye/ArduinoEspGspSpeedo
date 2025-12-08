@@ -10,6 +10,7 @@ echo "==============================="
 LIBRARIES=(
     "Adafruit GFX Library"
     "Adafruit SSD1306"
+    "TinyGPSPlus"
     "ArduinoJson@7.4.2"
 )
 

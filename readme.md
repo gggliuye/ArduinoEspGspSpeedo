@@ -2,7 +2,7 @@
 # ESP32 Gps Speedo
 
 
-use  [ESP32 C3 Supermini board](https://randomnerdtutorials.com/getting-started-esp32-c3-super-mini/), with :
+use  [ESP32 C3 Supermini board](https://randomnerdtutorials.com/getting-started-esp32-c3-super-mini/), [Box 3d STL model](https://www.tinkercad.com/things/17OVYhJvpWT-esp32-c3-speedo) with :
 
 * 500 mAh battery.
 * Type C battery charge module.

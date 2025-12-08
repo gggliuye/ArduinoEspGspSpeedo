@@ -11,15 +11,21 @@
 #define SCREEN_SDA 2
 #define SCREEN_WIDTH 128 // OLED display_ width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display_ height, in pixels
-#define TEXT_SIZE 2
-#define LINE_HEIGHT (10 * 2)
+#define TEXT_SIZE_TIME 2
+#define TEXT_SIZE_GPS 1
+#define TEXT_SIZE_VEL 4
+#define LINE_HEIGHT 10
 
-Adafruit_SSD1306 display_(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
+class MyDisplay : public Adafruit_SSD1306 {
+public:
+  MyDisplay(uint8_t w, uint8_t h, TwoWire *twi, int8_t rst_pin)
+    : Adafruit_SSD1306(w, h, twi, rst_pin) {}
 
-static void CleanLine(size_t line_id) {
-  display_.fillRect(0, line_id * LINE_HEIGHT, SCREEN_WIDTH, LINE_HEIGHT, SSD1306_BLACK);  // clear line
-}
+  int16_t getCursorX() { return cursor_x; }
+  int16_t getCursorY() { return cursor_y; }
+};
 
+MyDisplay display_(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, -1);
 
 void SetUpDisplay() {
   Wire.begin(SCREEN_SDA, SCREEN_SCK);
@@ -35,26 +41,40 @@ void SetUpDisplay() {
   display_.ssd1306_command(SSD1306_SETCONTRAST);
   display_.ssd1306_command(0x5F); // 0x00~0xFF，the low, the less power consumed
 
-  display_.setTextSize(TEXT_SIZE);
   display_.setTextColor(SSD1306_WHITE);
   display_.display();
 }
 
-static int cnt_ = 0;
 void DisplayLoop() {
-  CleanLine(0);  // clear line
-  display_.setCursor(0, 0);
-  display_.print("CNT ");
-  display_.print(cnt_++);
+  // display time
+  int current_h = 0;
+  int block_h = LINE_HEIGHT * TEXT_SIZE_TIME;
+  int hour, minute;
+  SystemStateGetTime(&hour, &minute, nullptr);
+  display_.fillRect(0, current_h, SCREEN_WIDTH, block_h, SSD1306_BLACK);  // clear line
+  display_.setTextSize(TEXT_SIZE_TIME);
+  display_.setCursor(0, current_h);
+  display_.printf("%02d:%02d", hour, minute);
 
-  CleanLine(1);  // clear line
-  CleanLine(2);  // clear line
-  display_.setCursor(0, LINE_HEIGHT);
+  current_h += block_h;
+  block_h = LINE_HEIGHT * TEXT_SIZE_GPS;
+  display_.fillRect(0, current_h, SCREEN_WIDTH, block_h, SSD1306_BLACK);
+  display_.setCursor(0, current_h);
+  display_.setTextSize(TEXT_SIZE_GPS);
+  display_.print("lat:");
   display_.print(gps_data.lat, 1);
-  display_.print(" ");
+  display_.print(", lng:");
   display_.print(gps_data.lng, 1);
-  display_.print(" ");
+
+  current_h += block_h;
+  block_h = LINE_HEIGHT * TEXT_SIZE_VEL;
+  display_.fillRect(0, current_h, SCREEN_WIDTH, block_h, SSD1306_BLACK);
+  display_.setTextSize(TEXT_SIZE_VEL);
+  display_.setCursor(0, current_h);
   display_.print(gps_data.speed_kmph, 1);
+  display_.setTextSize(TEXT_SIZE_TIME);
+  display_.setCursor(display_.getCursorX(), display_.getCursorY() + (TEXT_SIZE_VEL - TEXT_SIZE_TIME) * LINE_HEIGHT);
+  display_.print("kmh");
 
   display_.display();
 }

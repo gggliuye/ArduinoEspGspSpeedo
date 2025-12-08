@@ -2,7 +2,7 @@
 
 
 
-#define DEBUG_MODE
+// #define DEBUG_MODE
 
 #if defined(DEBUG_MODE)
 #define DEBUG_LOG(...) printf(__VA_ARGS__)

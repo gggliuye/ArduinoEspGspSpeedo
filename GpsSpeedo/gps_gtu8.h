@@ -23,6 +23,8 @@ extern "C" {
 
 void GpsInit();
 bool GpsGetLastest();
+int64_t SystemStateGetGlobalRealTime();
+void SystemStateGetTime(int* hour, int* minute, int* second);
 
 #ifdef __cplusplus
 }

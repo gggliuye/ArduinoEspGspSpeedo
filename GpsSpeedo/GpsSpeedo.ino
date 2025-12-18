@@ -23,7 +23,7 @@ void setup() {
   Serial.begin(115200);
   // esp_sleep_enable_ext0_wakeup(GPIO_NUM_0, 0); // wakeup on LOW
 
-  setCpuFrequencyMhz(160);
+  setCpuFrequencyMhz(80);
   DEBUG_LOG("CPU Freq set to: %d MHz\n", getCpuFrequencyMhz());
 
   GpsInit();

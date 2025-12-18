@@ -11,6 +11,7 @@ use  [ESP32 C3 Supermini board](https://randomnerdtutorials.com/getting-started-
 
 ![image](assets/esp32_speedo_display.jpg)
 
+https://github.com/user-attachments/assets/5a0e793a-2dc4-4704-99d8-fd07caa63458
 
 ## Build
 
